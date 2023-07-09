@@ -1,53 +1,81 @@
-import { Component } from 'react';
 import CardList from './component/card-list/cardList';
 import SearchBox from './component/search-box/searchbox';
 import './App.css';
+import { useEffect, useState } from 'react';
 
-class App extends Component {
+const App =() => { 
 
-  constructor(){
-    super();
-   this.state = {
-     userContainer : [],
-     valueOfTextboxOnChange: ""
-  }
-  }
+  const [valueOfTextboxOnChange, setvalueOfTextboxOnChange] = useState("");
+  const [userContainer, setuserContainer] = useState([]);
+  const [filteredMosters, setfilteredMosters] = useState(userContainer)
 
-
-  componentDidMount(){
+  useEffect(()=>{
     fetch('https://jsonplaceholder.typicode.com/users')
     .then((response)=> response.json())
     .then((users)=>{
-      this.setState(()=>{
-        return {userContainer: users}
-      })
+      setuserContainer(users)
     })
-  }
+  }, []);
 
-  OnSearchChange = (event)=>{
-    const valueOfTextboxOnChange = event.target.value.toLowerCase();
-    this.setState(()=>{
-      return {valueOfTextboxOnChange}
-    })
-}
+  useEffect(()=>{
+    const newFilteredMonster = userContainer.filter((filteredUsers)=>{
+      return filteredUsers.name.toLowerCase().includes(valueOfTextboxOnChange);
+    });
 
- render(){
-  const {userContainer, valueOfTextboxOnChange} = this.state
-  const {OnSearchChange} = this;
+    setfilteredMosters(newFilteredMonster)
+  }, [userContainer, valueOfTextboxOnChange])
 
-  const newFilteredMonster =userContainer.filter((filteredUsers)=>{
-    return filteredUsers.name.toLowerCase().includes(valueOfTextboxOnChange);
-  });
-    return (
-      <div className="App">
-        <h1 className='app-title'>Monsters Hunt</h1>
-        <SearchBox onsearchsearch = {OnSearchChange} />
-        <CardList monsters = {newFilteredMonster} />
-      
-      </div>
-    );
-  }
+    const OnSearchChange = (event)=>{
+        const valueOfTextboxOnChange = event.target.value.toLowerCase();
+          setvalueOfTextboxOnChange(valueOfTextboxOnChange)
+          
+    }
  
+  return(
+   <div>
+    <h1 className='app-title'>Monsters Hunt</h1>
+    <SearchBox onsearchsearch = {OnSearchChange} />
+    <CardList monsters = {filteredMosters} />
+  </div>
+)
+
 }
+
+//   constructor(){
+//     super();
+//    this.state = {
+//      userContainer : [],
+//      valueOfTextboxOnChange: ""
+//   }
+//   }
+
+
+//   componentDidMount(){
+//     
+//   }
+
+//   OnSearchChange = (event)=>{
+//     const valueOfTextboxOnChange = event.target.value.toLowerCase();
+//     this.setState(()=>{
+//       return {valueOfTextboxOnChange}
+//     })
+// }
+
+//  render(){
+//   const {userContainer, valueOfTextboxOnChange} = this.state
+//   const {OnSearchChange} = this;
+
+
+//     return (
+//       <div className="App">
+//         <h1 className='app-title'>Monsters Hunt</h1>
+//         <SearchBox onsearchsearch = {OnSearchChange} />
+//         
+      
+//       </div>
+//     );
+//   }
+ 
+// }
 
 export default App;
