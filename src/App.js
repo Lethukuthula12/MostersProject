@@ -8,7 +8,7 @@ const App =() => {
   const [valueOfTextboxOnChange, setvalueOfTextboxOnChange] = useState("");
   const [userContainer, setuserContainer] = useState([]);
   const [filteredMosters, setfilteredMosters] = useState(userContainer)
-
+ 
   useEffect(()=>{
     fetch('https://jsonplaceholder.typicode.com/users')
     .then((response)=> response.json())
@@ -40,42 +40,5 @@ const App =() => {
 )
 
 }
-
-//   constructor(){
-//     super();
-//    this.state = {
-//      userContainer : [],
-//      valueOfTextboxOnChange: ""
-//   }
-//   }
-
-
-//   componentDidMount(){
-//     
-//   }
-
-//   OnSearchChange = (event)=>{
-//     const valueOfTextboxOnChange = event.target.value.toLowerCase();
-//     this.setState(()=>{
-//       return {valueOfTextboxOnChange}
-//     })
-// }
-
-//  render(){
-//   const {userContainer, valueOfTextboxOnChange} = this.state
-//   const {OnSearchChange} = this;
-
-
-//     return (
-//       <div className="App">
-//         <h1 className='app-title'>Monsters Hunt</h1>
-//         <SearchBox onsearchsearch = {OnSearchChange} />
-//         
-      
-//       </div>
-//     );
-//   }
- 
-// }
 
 export default App;
